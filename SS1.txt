@@ -1,0 +1,80 @@
+
+
+;SS1 ==0801==
+   10 rem set top of basic to $3000
+   20 poke 51, 0: poke 52, 48
+   30 poke 55, 0: poke 56, 48
+   35 restore
+   40 poke 53280,12:poke 53281,15:print "{blk}"
+   41 print "{clr}    {rvon}          skyscrape64           "
+   42 print "{down}the builder climbs the unfinished"
+   43 print "skyscraper in an attempt to reach the"
+   44 print "lift at the top, but a collision or a"
+   45 print "high fall will lose a life."
+   46 print "{down}if he reaches the lift it will carry"
+   47 print "him to the next screen. there are 4"
+   48 print "different screens."
+   49 print "{down}your score depends on the number of"
+   50 print "screens completed and the time taken    for each screen."
+   59 rem poke in page copy routine
+   60 for i=0 to 17
+   70 read x
+   80 poke 49152+i,x
+   90 next i
+  100 data 142,10,192, 140,13,192
+  101 data 162,0, 189,0,193, 157,0,194
+  102 data 202, 208,247, 96
+  110 rem turn off kb and i/o
+  120 poke 56334,peek(56334)and254:poke 1,peek(1)and251
+  130 rem copy all pages of font rom
+  140 t=48: f=208
+  150 for p=0 to 15
+  160 poke 781,f+p:poke 782,t+p:sys 49152
+  170 next p
+  180 rem turn on i/o and kb
+  190 poke 1,peek(1) or 4: poke 56334,peek(56334) or 1
+  200 rem set charset pointer to $3000
+  210 poke 53272,(peek(53272)and240)+12
+  220 rem poke in our characters
+  230 for i=1 to 7
+  240 read c:x=12288+8*c
+  250 for j=0 to 7
+  260 read b:poke x+j,b
+  270 next j
+  280 next i
+  290 data 65, 56,56,146,124,56,56,40,108
+  300 data 83, 56,56,16,40,40,40,16,16
+  310 data 88, 56,56,16,56,124,186,40,68
+  320 data 90, 56,184,80,63,184,254,2,0
+  330 data 91, 223,223,223,0,253,253,253,0
+  340 data 77, 56,58,20,248,58,254,128,0
+  350 data 78, 56,56,16,254,56,254,0,0
+  360 print "{down}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}left            z"
+  361 print "{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}right           x"
+  362 print "{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}jump            m"
+  363 print "{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}wait  hold down n"
+  364 print "{down}    {rvon}          press a key           "
+  365 print "{down}{blu}original by a. sherwood, published in"
+  366 print "sep 1984 issue of sinclair programs.{blk}"
+  370 getk$:if k$="" then goto 370
+ 1000 l=3:s=0
+ 1010 print"{clr}":gosub 8000
+ 5000 end
+ 6000 for i=1 to 74:read j:next i:return
+ 6030 data 4,0,7, 4,28,4, 5,16,5, 6,7,5, 6,18,7, 6,28,4, 8,0,6, 8,31,1, 10,9,7
+ 6035 data 10,28,4, 11,4,9, 12,0,3, 14,0,2, 14,17,4, 14,30,2, 16,0,5, 16,16,6
+ 6040 data 16,25,7, 18,30,2, 20,15,1, 20,15,1, 20,26,6, 21,0,8, 21,11,8
+ 6045 data 21,21,3, 21,26,6, 0,0,0
+ 8000 read j: read m: read i
+ 8004 if m=-1 then gosub 6000
+ 8005 if i=0 then return
+ 8006 if m=0 or m+i=32 then print"{blk}":goto 8010
+ 8007 print"{red}"
+ 8010 rem for f=o to i-1
+ 8020 rem poke 1024+40*j+m+f+4,91:next f
+ 8021 d$="{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}"
+ 8022 a$="{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}"
+ 8023 b$="{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}{SHIFT-+}"
+ 8024 print"{home}"left$(d$,j)left$(a$,m+4)left$(b$,i)
+ 8040 goto 8000
+

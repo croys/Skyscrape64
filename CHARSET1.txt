@@ -1,0 +1,28 @@
+
+
+;CHARSET1 ==0801==
+   10 rem set top of basic to $3000
+   20 poke 51, 0: poke 52, 48
+   30 poke 55, 0: poke 56, 48
+   40 restore
+   50 rem poke in page copy routine
+   60 for i=0 to 17
+   70 read x
+   80 poke 49152+i,x
+   90 next i
+  100 data 142,10,192, 140,13,192
+  101 data 162,0, 189,0,193, 157,0,194
+  102 data 202, 208,247, 96
+  105 poke 781,193:poke 782,194:sys 49152
+  110 rem turn off kb and i/o
+  120 poke 56334,peek(56334)and254:poke 1,peek(1)and251
+  130 rem copy all pages of font rom
+  140 t=48: f=208
+  150 for p=0 to 15
+  160 poke 781,f+p:poke 782,t+p:sys 49152
+  170 next p
+  180 rem turn on i/o and kb
+  190 poke 1,peek(1) or 4: poke 56334,peek(56334) or 1
+  200 rem set charset pointer to $3000
+  210 poke 53272,(peek(53272)and240)+12
+
